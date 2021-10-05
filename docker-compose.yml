@@ -1,0 +1,31 @@
+version: '3'
+services:
+    #PHP Service
+    php:
+        container_name: p_service_php
+        build:
+            context: Docker/config/php
+        volumes:
+            - ./api:/usr/share/nginx
+        networks:
+            p-service-network:
+
+    #Nginx Service
+    nginx:
+        container_name: p_service_nginx
+        image: nginx:latest
+        ports:
+            - 8000:80
+        volumes:
+            - ./api:/usr/share/nginx
+            - ./Docker/config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            p-service-network:
+
+        depends_on:
+            - php
+
+networks:
+    p-service-network:
+
+
